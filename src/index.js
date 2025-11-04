@@ -19,6 +19,8 @@ class GameBoard {
   constructor() {
     this.size = 10;
     this.ships = [];
+    this.hits = [];
+    this.misses = [];
   }
   placeShip(pos, length) {
     this.ships.push(new Ship(pos, length));
@@ -34,6 +36,9 @@ class GameBoard {
           pos[1] === ship.pos[1]
         ) {
           ship.hit();
+          this.hits.push(pos);
+        } else {
+          this.misses.push(pos);
         }
       } else {
         const upperBound = ship.pos[1] + ship.length;
@@ -43,9 +48,21 @@ class GameBoard {
           pos[0] === ship.pos[0]
         ) {
           ship.hit();
+          this.hits.push(pos);
+        } else {
+          this.misses.push(pos);
         }
       }
     }
+  }
+  get allSunk() {
+    let allSunk = true;
+    for (let i = 0; i < this.ships.length; i++) {
+      if (!this.ships[i].sunk) {
+        allSunk = false;
+      }
+    }
+    return allSunk;
   }
 }
 

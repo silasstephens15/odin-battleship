@@ -15,8 +15,12 @@ test("Receive attack", () => {
   expect(testGameBoard.ships[0].hits).toBe(0);
   testGameBoard.receiveAttack([0, 0]);
   expect(testGameBoard.ships[0].hits).toBe(1);
+  expect(testGameBoard.hits).toContainEqual([0, 0]);
   testGameBoard.receiveAttack([0, 1]);
   expect(testGameBoard.ships[0].hits).toBe(1);
+  expect(testGameBoard.misses).toContainEqual([0, 1]);
   testGameBoard.receiveAttack([1, 0]);
   expect(testGameBoard.ships[0].hits).toBe(2);
+  testGameBoard.receiveAttack([2, 0]);
+  expect(testGameBoard.allSunk).toBeTruthy();
 });
