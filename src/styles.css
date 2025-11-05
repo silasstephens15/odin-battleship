@@ -1,0 +1,14 @@
+.game-board {
+  background-color: black;
+  display: grid;
+  grid-template-columns: repeat(10, 5vw);
+  grid-template-rows: repeat(10, 5vw);
+  gap: 1px;
+  border: 1px solid black;
+}
+
+.tile {
+  width: 5vw;
+  aspect-ratio: 1/1;
+  background-color: white;
+}

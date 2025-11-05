@@ -1,4 +1,4 @@
-import { Ship, GameBoard } from "./src/index.js";
+import { Ship, GameBoard } from "./src/game.js";
 
 test("Sinking works", () => {
   testShip = new Ship([0, 0], 3);
