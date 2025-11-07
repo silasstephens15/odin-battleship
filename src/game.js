@@ -47,8 +47,10 @@ class GameBoard {
         ) {
           ship.hit();
           this.hits.push(pos);
+          return true;
         } else {
           this.misses.push(pos);
+          return false;
         }
       }
     }

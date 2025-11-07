@@ -6,11 +6,14 @@ function generateGameBoard(player) {
       const tile = document.createElement("div");
       tile.id = `${j},${i}`;
       tile.classList.add("tile");
+      if (player.isComputer) {
+        tile.classList.add("computer-tile");
+      }
       board.appendChild(tile);
     }
   }
-  const body = document.querySelector("body");
-  body.appendChild(board);
+  const container = document.querySelector("#board-container");
+  container.appendChild(board);
 }
 
 export { generateGameBoard };

@@ -1,14 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#board-container {
+  width: calc(100vw - 64px);
+  display: flex;
+  justify-content: space-around;
+  padding: 32px;
+}
+
 .game-board {
+  width: 30%;
+  aspect-ratio: 1/1;
   background-color: black;
   display: grid;
-  grid-template-columns: repeat(10, 5vw);
-  grid-template-rows: repeat(10, 5vw);
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   gap: 1px;
   border: 1px solid black;
 }
 
 .tile {
-  width: 5vw;
   aspect-ratio: 1/1;
   background-color: white;
+  font-size: 1.5vw;
+  text-align: center;
+  vertical-align: middle;
+  font-family: Tahoma;
+}
+
+.hit {
+  color: red;
+}
+
+.miss {
+  color: lightgray;
 }
