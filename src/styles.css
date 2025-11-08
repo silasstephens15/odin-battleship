@@ -37,3 +37,20 @@
 .hit {
   color: red;
 }
+
+h2 {
+  margin: auto;
+}
+
+button {
+  padding: 4px;
+  margin: 16px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
