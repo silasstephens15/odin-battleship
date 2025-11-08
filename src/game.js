@@ -11,6 +11,19 @@ class Ship {
   get sunk() {
     return this.hits >= this.length ? true : false;
   }
+  get allPos() {
+    let allPos = [];
+    if (this.horizontal) {
+      for (let i = 0; i < this.length; i++) {
+        allPos.push([this.pos[0] + i, this.pos[1]]);
+      }
+    } else {
+      for (let i = 0; i < this.length; i++) {
+        allPos.push([this.pos[0], this.pos[1] + i]);
+      }
+    }
+    return allPos;
+  }
 }
 
 class GameBoard {

@@ -24,3 +24,18 @@ test("Receive attack", () => {
   testGameBoard.receiveAttack([2, 0]);
   expect(testGameBoard.allSunk).toBeTruthy();
 });
+
+test("Ship position", () => {
+  testShip = new Ship([0, 0], 3);
+  testShip2 = new Ship([3, 3], 2);
+  testShip2.horizontal = false;
+  expect(testShip.allPos).toEqual([
+    [0, 0],
+    [1, 0],
+    [2, 0],
+  ]);
+  expect(testShip2.allPos).toEqual([
+    [3, 3],
+    [3, 4],
+  ]);
+});
