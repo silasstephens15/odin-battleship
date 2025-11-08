@@ -37,20 +37,37 @@ class GameBoard {
     this.ships.push(new Ship(pos, length));
   }
   randomizeShips(...lengths) {
-    let notOverlapping = true;
+    let overlapping = false;
     let pos = [];
+    const horizontal = Math.random() >= 0.5;
+    const allPos = [];
     for (let i = 0; i < lengths.length; i++) {
       do {
-        notOverlapping = false;
+        overlapping = false;
         pos = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)];
-        for (let i = 0; i < this.ships.length; i++) {
-          if (JSON.stringify(this.ships[i].pos) === JSON.stringify(pos)) {
-            notOverlapping = false;
+        if (horizontal) {
+          for (let j = 0; j < lengths[i]; j++) {
+            allPos.push([pos[0] + j, pos[1]]);
+          }
+        } else {
+          for (let j = 0; j < lengths[i]; j++) {
+            allPos.push([pos[0], pos[1] + j]);
           }
         }
-      } while (notOverlapping);
+        if (
+          allPos[allPos.length - 1][0] > 9 ||
+          allPos[allPos.length - 1][1] > 9
+        ) {
+          overlapping = true;
+        }
+        for (let i = 0; i < this.ships.length; i++) {
+          if (JSON.stringify(this.ships[i].pos) === JSON.stringify(pos)) {
+            overlapping = true;
+          }
+        }
+      } while (overlapping);
       this.placeShip(pos, lengths[i]);
-      this.ships[this.ships.length - 1].horizontal = Math.random() >= 0.5;
+      this.ships[this.ships.length - 1].horizontal = horizontal;
     }
   }
   receiveAttack(pos) {
