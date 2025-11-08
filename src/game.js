@@ -40,9 +40,16 @@ class GameBoard {
     let overlapping = false;
     let pos = [];
     const horizontal = Math.random() >= 0.5;
-    const allPos = [];
+    let allPos = [];
     for (let i = 0; i < lengths.length; i++) {
+      const startTime = Date.now();
       do {
+        if (Date.now() - startTime > 500) {
+          this.ships = [];
+          i = 0;
+          break;
+        }
+        allPos = [];
         overlapping = false;
         pos = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)];
         if (horizontal) {
@@ -60,9 +67,25 @@ class GameBoard {
         ) {
           overlapping = true;
         }
-        for (let i = 0; i < this.ships.length; i++) {
-          if (JSON.stringify(this.ships[i].pos) === JSON.stringify(pos)) {
-            overlapping = true;
+        const boundaryTiles = structuredClone(allPos);
+        for (let j = 0; j < allPos.length; j++) {
+          boundaryTiles.push([allPos[j][0] + 1, allPos[j][1]]);
+          boundaryTiles.push([allPos[j][0] - 1, allPos[j][1]]);
+          boundaryTiles.push([allPos[j][0], allPos[j][1] + 1]);
+          boundaryTiles.push([allPos[j][0], allPos[j][1] - 1]);
+          boundaryTiles.push([allPos[j][0] + 1, allPos[j][1] + 1]);
+          boundaryTiles.push([allPos[j][0] - 1, allPos[j][1] - 1]);
+          boundaryTiles.push([allPos[j][0] + 1, allPos[j][1] - 1]);
+          boundaryTiles.push([allPos[j][0] - 1, allPos[j][1] + 1]);
+        }
+        outerLoop: for (let j = 0; j < this.ships.length; j++) {
+          for (let k = 0; k < this.ships[j].allPos.length; k++) {
+            if (
+              JSON.stringify(boundaryTiles).includes(this.ships[j].allPos[k])
+            ) {
+              overlapping = true;
+              break outerLoop;
+            }
           }
         }
       } while (overlapping);

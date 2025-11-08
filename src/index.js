@@ -13,7 +13,11 @@ generateGameBoard(player2);
 const boardContainer = document.querySelector("#board-container");
 const randomButton = document.querySelector("button");
 randomButton.addEventListener("click", () => {
-  player1.gameBoard.randomizeShips(2, 3, 4, 4, 5);
+  player1.gameBoard.ships = [];
+  boardContainer.innerHTML = "";
+  generateGameBoard(player1);
+  generateGameBoard(player2);
+  player1.gameBoard.randomizeShips(2, 3, 3, 4, 5);
   const shipTiles = [];
   for (let i = 0; i < player1.gameBoard.ships.length; i++) {
     shipTiles.push(player1.gameBoard.ships[i].allPos);
