@@ -8,6 +8,8 @@ function generateGameBoard(player) {
       tile.classList.add("tile");
       if (player.isComputer) {
         tile.classList.add("computer-tile");
+      } else {
+        tile.classList.add("human-tile");
       }
       board.appendChild(tile);
     }

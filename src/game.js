@@ -105,6 +105,7 @@ class GameBoard {
         ) {
           ship.hit();
           this.hits.push(pos);
+          return true;
         } else {
           this.misses.push(pos);
         }
@@ -120,10 +121,10 @@ class GameBoard {
           return true;
         } else {
           this.misses.push(pos);
-          return false;
         }
       }
     }
+    return false;
   }
   get allSunk() {
     let allSunk = true;

@@ -30,10 +30,10 @@
   font-family: Tahoma;
 }
 
-.hit {
-  color: red;
-}
-
 .miss {
   color: lightgray;
+}
+
+.hit {
+  color: red;
 }
