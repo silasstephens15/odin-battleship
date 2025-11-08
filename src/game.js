@@ -36,6 +36,23 @@ class GameBoard {
   placeShip(pos, length) {
     this.ships.push(new Ship(pos, length));
   }
+  randomizeShips(...lengths) {
+    let notOverlapping = true;
+    let pos = [];
+    for (let i = 0; i < lengths.length; i++) {
+      do {
+        notOverlapping = false;
+        pos = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)];
+        for (let i = 0; i < this.ships.length; i++) {
+          if (JSON.stringify(this.ships[i].pos) === JSON.stringify(pos)) {
+            notOverlapping = false;
+          }
+        }
+      } while (notOverlapping);
+      this.placeShip(pos, lengths[i]);
+      this.ships[this.ships.length - 1].horizontal = Math.random() >= 0.5;
+    }
+  }
   receiveAttack(pos) {
     for (let i = 0; i < this.ships.length; i++) {
       const ship = this.ships[i];

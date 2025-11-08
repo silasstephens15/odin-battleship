@@ -39,3 +39,15 @@ test("Ship position", () => {
     [3, 4],
   ]);
 });
+
+test("Random ship placement", () => {
+  const testGameBoard = new GameBoard();
+  testGameBoard.randomizeShips(2, 3, 3, 4);
+  expect(testGameBoard.ships.length).toBe(4);
+  let posSet = new Set();
+  for (let i = 0; i < testGameBoard.ships.length; i++) {
+    posSet.add(JSON.stringify(testGameBoard.ships[i].pos));
+  }
+
+  expect(posSet.size).toBe(testGameBoard.ships.length);
+});
