@@ -5,8 +5,47 @@ class Ship {
     this.hits = 0;
     this.horizontal = true;
   }
-  hit() {
+  hit(isComputerBoard = false) {
+    let isComputer = !isComputerBoard;
     this.hits++;
+    const allPos = this.allPos;
+    const boundaryTiles = [];
+    let tileSet = "computer-tile";
+    if (isComputer) {
+      tileSet = "human-tile";
+    }
+    if (this.sunk) {
+      for (let j = 0; j < allPos.length; j++) {
+        boundaryTiles.push([allPos[j][0] + 1, allPos[j][1]]);
+        boundaryTiles.push([allPos[j][0] - 1, allPos[j][1]]);
+        boundaryTiles.push([allPos[j][0], allPos[j][1] + 1]);
+        boundaryTiles.push([allPos[j][0], allPos[j][1] - 1]);
+        boundaryTiles.push([allPos[j][0] + 1, allPos[j][1] + 1]);
+        boundaryTiles.push([allPos[j][0] - 1, allPos[j][1] - 1]);
+        boundaryTiles.push([allPos[j][0] + 1, allPos[j][1] - 1]);
+        boundaryTiles.push([allPos[j][0] - 1, allPos[j][1] + 1]);
+      }
+      for (let j = 0; j < boundaryTiles.length; j++) {
+        const tile = document.querySelector(
+          `#a${boundaryTiles[j][0]}-${boundaryTiles[j][1]}.${tileSet}`
+        );
+        if (
+          boundaryTiles[j][0] >= 0 &&
+          boundaryTiles[j][0] <= 9 &&
+          boundaryTiles[j][1] >= 0 &&
+          boundaryTiles[j][1] <= 9
+        ) {
+          if (
+            !JSON.stringify(this.allPos).includes(
+              JSON.stringify(boundaryTiles[j])
+            )
+          ) {
+            tile.classList.add("miss");
+            tile.textContent = "X";
+          }
+        }
+      }
+    }
   }
   get sunk() {
     return this.hits >= this.length ? true : false;
@@ -27,11 +66,12 @@ class Ship {
 }
 
 class GameBoard {
-  constructor() {
+  constructor(isComputer = false) {
     this.size = 10;
     this.ships = [];
     this.hits = [];
     this.misses = [];
+    this.isComputer = isComputer;
   }
   placeShip(pos, length) {
     this.ships.push(new Ship(pos, length));
@@ -103,7 +143,7 @@ class GameBoard {
           pos[0] < upperBound &&
           pos[1] === ship.pos[1]
         ) {
-          ship.hit();
+          ship.hit(this.isComputer);
           this.hits.push(pos);
           return true;
         } else {
@@ -116,7 +156,7 @@ class GameBoard {
           pos[1] < upperBound &&
           pos[0] === ship.pos[0]
         ) {
-          ship.hit();
+          ship.hit(this.isComputer);
           this.hits.push(pos);
           return true;
         } else {
@@ -140,7 +180,36 @@ class GameBoard {
 class Player {
   constructor(isComputer) {
     this.isComputer = isComputer;
-    this.gameBoard = new GameBoard();
+    this.gameBoard = new GameBoard(isComputer);
+  }
+  aiTurn(gameBoard) {
+    let selectedBefore = true;
+    let pos = [];
+    while (selectedBefore) {
+      selectedBefore = false;
+      pos = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)];
+      for (let i = 0; i < gameBoard.hits; i++) {
+        if (JSON.stringify(gameBoard.hits[i]).contains(JSON.stringify(pos))) {
+          selectedBefore = true;
+        }
+      }
+      for (let i = 0; i < gameBoard.misses; i++) {
+        if (JSON.stringify(gameBoard.misses[i]).contains(JSON.stringify(pos))) {
+          selectedBefore = true;
+        }
+      }
+    }
+    const tile = document.querySelector(`#a${pos[0]}-${pos[1]}.human-tile`);
+    let turn = true;
+
+    if (gameBoard.receiveAttack(pos)) {
+      tile.classList.add("hit");
+      this.aiTurn(gameBoard);
+      tile.textContent = "X";
+    } else {
+      tile.classList.add("miss");
+      tile.textContent = "X";
+    }
   }
 }
 
